@@ -58,11 +58,7 @@ class AnalbotController < ApplicationController
 
               message = {
                 type: 'text',
-                text: "お前の居場所特定したわ m9^p^\n" + "今日は "  + weather + "\n" 
-                                                                  + per00to06 + "\n"
-                                                                  + per06to12 + "\n"
-                                                                  + per12to18 + "\n"
-                                                                  + per18to24 + "\n"
+                text: "お前の居場所特定したわ m9^p^\n" 
               }
             
             end
