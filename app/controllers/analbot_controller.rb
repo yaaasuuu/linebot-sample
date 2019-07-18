@@ -50,7 +50,7 @@ class AnalbotController < ApplicationController
               doc = REXML::Document.new(xml)
 
               xpath = 'weatherforecast/pref/area[2]/info[2]'
-              date = doc.elements[xpath].text #日付
+              date = doc.elements[xpath + "/date"].text #日付
               weather = doc.elements[xpath + '/weather'].text # 天気（例：「晴れ」）
               per00to06 = doc.elements[xpath + '/rainfallchance/period[1]'].text # 0-6時の降水確率
               per06to12 = doc.elements[xpath + '/rainfallchance/period[2]'].text # 6-12時の降水確率
