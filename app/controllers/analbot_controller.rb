@@ -1,5 +1,8 @@
 class AnalbotController < ApplicationController
   require 'line/bot'
+  require 'net/http'
+  require 'uri'
+  require 'rexml/document'
 
   protect_from_forgery :except => [:callback]
 
@@ -36,6 +39,15 @@ class AnalbotController < ApplicationController
               response = client.get_message_content(event.message['id'])
               tf = Tempfile.open("content")
               tf.write(response.body)
+
+          when Line::Bot::Event::MessageType::Location
+              latitude = event.message['latitude'] # 緯度
+              longitude = event.message['longitude'] # 経度
+              message = {
+                type: 'text'
+                text: 'お前の居場所特定したわ m9^p^'
+              }
+              client.reply_message(event['replyToken'], message)
 
           end
         end
