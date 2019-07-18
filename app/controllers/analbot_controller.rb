@@ -56,13 +56,15 @@ class AnalbotController < ApplicationController
               per12to18 = doc.elements[xpath + '/rainfallchance/period[3]'].text # 12-18時の降水確率
               per18to24 = doc.elements[xpath + '/rainfallchance/period[4]'].text # 18-24時の降水確率
 
+              ms = "お前の居場所特定したわ m9^p^\n" 
+                    + "今日は #{weather} や！\n"
+                    + "00 ~ 06時 #{per00to06} %\n"
+                    + "06 ~ 12時 #{per06to12} %\n"
+                    + "12 ~ 18時 #{per12to18} %\n"
+                    + "18 ~ 24時 #{per18to24} %\n"
               message = {
                 type: 'text',
-                text: "お前の居場所特定したわ m9^p^\n" + "今日は #{weather} や！\n"
-                + "00 ~ 06時 #{per00to06} %\n"
-                + "06 ~ 12時 #{per06to12} %\n"
-                + "12 ~ 18時 #{per12to18} %\n"
-                + "18 ~ 24時 #{per18to24} %\n"
+                text: "#{ms}"
               }
             
             end
