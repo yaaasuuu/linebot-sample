@@ -33,7 +33,6 @@ class AnalbotController < ApplicationController
                 # text: event.message['text']
                 text: '＊ <- It\'s an anal.'
               }
-              client.reply_message(event['replyToken'], message)
 
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
               response = client.get_message_content(event.message['id'])
@@ -47,9 +46,9 @@ class AnalbotController < ApplicationController
                 type: 'text'
                 text: 'お前の居場所特定したわ m9^p^'
               }
-              client.reply_message(event['replyToken'], message)
-
+              
           end
+          client.reply_message(event['replyToken'], message)
         end
     }
     head :ok
