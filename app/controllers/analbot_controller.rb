@@ -45,7 +45,7 @@ class AnalbotController < ApplicationController
 =end
             case event.message['text']
             when '天気', 'てんき'
-              uri = URI.parse('http://www.drk7.jp/weather/xml/40.xml')
+              uri = URI.parse('https://www.drk7.jp/weather/xml/40.xml')
               xml = Net::HTTP.get(uri)
               doc = REXML::Document.new(xml)
 
