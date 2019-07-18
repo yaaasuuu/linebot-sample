@@ -43,7 +43,7 @@ class AnalbotController < ApplicationController
               latitude = event.message['latitude'] # 緯度
               longitude = event.message['longitude'] # 経度
               message = {
-                type: 'text'
+                type: 'text',
                 text: 'お前の居場所特定したわ m9^p^'
               }
               
