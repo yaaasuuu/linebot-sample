@@ -28,23 +28,41 @@ class AnalbotController < ApplicationController
           case event.type
 
           when Line::Bot::Event::MessageType::Text
-              message = {
-                type: 'text',
-                # text: event.message['text']
-                text: '＊ <- It\'s an anal.'
-              }
-
+            message = {
+              type: 'text',
+              # text: event.message['text']
+              text: '＊ <- It\'s an anal.'
+            }
+=begin
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-              response = client.get_message_content(event.message['id'])
-              tf = Tempfile.open("content")
-              tf.write(response.body)
+            response = client.get_message_content(event.message['id'])
+            tf = Tempfile.open("content")
+            tf.write(response.body)
 
           when Line::Bot::Event::MessageType::Location
-              latitude = event.message['latitude'] # 緯度
-              longitude = event.message['longitude'] # 経度
+            latitude = event.message['latitude'] # 緯度
+            longitude = event.message['longitude'] # 経度
+=end
+            case event.message['text']
+            when '天気', 'てんき'
+              uri = URI.parse('http://www.drk7.jp/weather/xml/40.xml')
+              xml = Net::HTTP.get(uri)
+              doc = REXML::Document.new(xml)
+
+              xpath = 'weatherforecast/pref/area[2]/info[2]'
+              weather = doc.elements[xpath + '/weather'].text # 天気（例：「晴れ」）
+              per00to06 = doc.elements[xpath + '/rainfallchance/period[1]'].text # 0-6時の降水確率
+              per06to12 = doc.elements[xpath + '/rainfallchance/period[2]'].text # 6-12時の降水確率
+              per12to18 = doc.elements[xpath + '/rainfallchance/period[3]'].text # 12-18時の降水確率
+              per18to24 = doc.elements[xpath + '/rainfallchance/period[4]'].text # 18-24時の降水確率
+
               message = {
                 type: 'text',
-                text: 'お前の居場所特定したわ m9^p^'
+                text: "お前の居場所特定したわ m9^p^\n" + "今日は "  + weather + "\n" 
+                                                                  + per00to06 + "\n"
+                                                                  + per06to12 + "\n"
+                                                                  + per12to18 + "\n"
+                                                                  + per18to24 + "\n"
               }
               
           end
