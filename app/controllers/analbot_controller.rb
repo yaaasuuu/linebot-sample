@@ -1,5 +1,5 @@
 class AnalbotController < ApplicationController
-    require 'line/bot'
+  require 'line/bot'
 
   protect_from_forgery :except => [:callback]
 
@@ -22,18 +22,22 @@ class AnalbotController < ApplicationController
     events.each { |event|
         case event
         when Line::Bot::Event::Message
-        case event.type
-        when Line::Bot::Event::MessageType::Text
-            message = {
-            type: 'text',
-            text: event.message['text']
-            }
-            client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-            response = client.get_message_content(event.message['id'])
-            tf = Tempfile.open("content")
-            tf.write(response.body)
-        end
+          case event.type
+
+          when Line::Bot::Event::MessageType::Text
+              message = {
+                type: 'text',
+                # text: event.message['text']
+                text: '＊ <- It\'s an anal.'
+              }
+              client.reply_message(event['replyToken'], message)
+
+          when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
+              response = client.get_message_content(event.message['id'])
+              tf = Tempfile.open("content")
+              tf.write(response.body)
+
+          end
         end
     }
     head :ok
