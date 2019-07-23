@@ -52,7 +52,7 @@ class AnalbotController < ApplicationController
                   d = "1.左下の'+'を押し位置情報を選択する。\n"
                   e = "2.画面中央の'この位置を送信'を押す。"
                   ms = "#{a}#{b}#{c}#{d}#{e}"
-                end
+                
                 when '天気', 'てんき'
                   uri = URI.parse('https://www.drk7.jp/weather/xml/40.xml')
                   xml = Net::HTTP.get(uri)
@@ -76,11 +76,8 @@ class AnalbotController < ApplicationController
                   d = "18 ~ 24時 #{per18to24} %"
                   main = "#{date} の天気は\n「 #{weather} 」\n"
                   ms = "#{main}#{a}#{b}#{c}#{d}"
-                end
               end
-            end
           end
-        end
         message = {
           type: 'text',
           text: "#{ms}"
