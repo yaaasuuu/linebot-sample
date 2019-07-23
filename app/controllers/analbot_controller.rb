@@ -37,12 +37,6 @@ class AnalbotController < ApplicationController
             longitude = event.message['longitude'] # 経度
 =end
             when Line::Bot::Event::MessageType::Text
-              message = {
-                type: 'text',
-                # text: event.message['text']
-                text: '使い方を知りたいときは\'使い方\'と入力してください。'
-              }
-              
               case event.message['text']
                 when '使い方'
                   s = "〇使い方を知りたい。\n'使い方'と入力する。"
@@ -76,6 +70,12 @@ class AnalbotController < ApplicationController
                   d = "18 ~ 24時 #{per18to24} %"
                   main = "#{date} の天気は\n「 #{weather} 」\n"
                   ms = "#{main}#{a}#{b}#{c}#{d}"
+
+                else
+                  ms = {
+                    type: 'text',
+                    text: '使い方を知りたいときは\'使い方\'と入力してください。'
+                  }
               end
           end
         message = {
