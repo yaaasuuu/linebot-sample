@@ -26,13 +26,6 @@ class AnalbotController < ApplicationController
         case event
         when Line::Bot::Event::Message
           case event.type
-
-          when Line::Bot::Event::MessageType::Text
-            message = {
-              type: 'text',
-              # text: event.message['text']
-              text: '＊ <- It\'s an anal.'
-            }
 =begin
           when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
             response = client.get_message_content(event.message['id'])
@@ -43,7 +36,23 @@ class AnalbotController < ApplicationController
             latitude = event.message['latitude'] # 緯度
             longitude = event.message['longitude'] # 経度
 =end
+          when Line::Bot::Event::MessageType::Text
+            message = {
+              type: 'text',
+              # text: event.message['text']
+              text: '使い方を知りたいときは\'使い方\'と入力してください。'
+            }
+            
             case event.message['text']
+            when '使い方'
+              s = "〇使い方を知りたい。\n'使い方'と入力する。"
+              a = "〇今日の天気を知りたい。\n'天気'または'てんき'と入力する。\n"
+              b = "〇現在地を登録したい。\n位置情報を送ることで表示される天気の地点を指定できます。\n"
+              c = "★位置情報の送り方\n"
+              d = "1.左下の'+'を押し位置情報を選択する。\n"
+              e = "2.画面中央の'この位置を送信'を押す。"
+              ms = "#{a}#{b}#{c}#{d}#{e}"
+            end
             when '天気', 'てんき'
               uri = URI.parse('https://www.drk7.jp/weather/xml/40.xml')
               xml = Net::HTTP.get(uri)
@@ -64,17 +73,15 @@ class AnalbotController < ApplicationController
               a = "00 ~ 06時 #{per00to06} %\n"
               b = "06 ~ 12時 #{per06to12} %\n"
               c = "12 ~ 18時 #{per12to18} %\n"
-              d = "18 ~ 24時 #{per18to24} %\n"
-              main = "#{date} の天気は\n「 #{weather} 」！\n"
+              d = "18 ~ 24時 #{per18to24} %"
+              main = "#{date} の天気は\n「 #{weather} 」\n"
               ms = "#{main}#{a}#{b}#{c}#{d}"
-
-              message = {
-                type: 'text',
-                text: "#{ms}"
-              }
-            
             end
           end
+          message = {
+            type: 'text',
+            text: "#{ms}"
+          }
           client.reply_message(event['replyToken'], message)
         end
     }  
