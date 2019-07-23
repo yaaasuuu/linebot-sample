@@ -49,11 +49,11 @@ class AnalbotController < ApplicationController
               xml = Net::HTTP.get(uri)
               doc = REXML::Document.new(xml)
 
-              xpath = 'weatherforecast/pref/area[2]/info[2]'
-              
               ENV['TZ'] = 'Asia/Tokyo'
               d = Time.new;
               date = d.strftime("%Y/%m/%d") #日付
+              
+              xpath = "weatherforecast/pref/area[2]/info[@date='#{date}']"
               
               weather = doc.elements[xpath + '/weather'].text # 天気（例：「晴れ」）
               per00to06 = doc.elements[xpath + '/rainfallchance/period[1]'].text # 0-6時の降水確率
@@ -61,7 +61,13 @@ class AnalbotController < ApplicationController
               per12to18 = doc.elements[xpath + '/rainfallchance/period[3]'].text # 12-18時の降水確率
               per18to24 = doc.elements[xpath + '/rainfallchance/period[4]'].text # 18-24時の降水確率
 
-              ms = "お前の居場所特定したわ m9^p^\n#{date} の天気は\n「 #{weather} 」 や！\n00 ~ 06時 #{per00to06} %\n06 ~ 12時 #{per06to12} %\n12 ~ 18時 #{per12to18} %\n18 ~ 24時 #{per18to24} %" 
+              ms = "#{date} の天気は
+              「 #{weather} 」！
+              00 ~ 06時 #{per00to06} %
+              06 ~ 12時 #{per06to12} %
+              12 ~ 18時 #{per12to18} %
+              18 ~ 24時 #{per18to24} %"
+               
               message = {
                 type: 'text',
                 text: "#{ms}"
