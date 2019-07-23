@@ -72,10 +72,7 @@ class AnalbotController < ApplicationController
                   ms = "#{main}#{a}#{b}#{c}#{d}"
 
                 else
-                  ms = {
-                    type: 'text',
-                    text: '使い方を知りたいときは\'使い方\'と入力してください。'
-                  }
+                  ms = "使い方を知りたいときは'使い方'と入力してください。"
               end
           end
         message = {
