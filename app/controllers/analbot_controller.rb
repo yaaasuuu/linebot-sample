@@ -25,21 +25,16 @@ class AnalbotController < ApplicationController
     events.each { |event|
       case event
         when Line::Bot::Event::Message
-          case event.type
-=begin
-          when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-            response = client.get_message_content(event.message['id'])
-            tf = Tempfile.open("content")
-            tf.write(response.body)
+          case event.MessageType
 
-          when Line::Bot::Event::MessageType::Location
-            latitude = event.message['latitude'] # 緯度
-            longitude = event.message['longitude'] # 経度
-=end
+            when Line::Bot::Event::MessageType::Location
+              user_lat = event.message['latitude'] # 緯度
+              user_long = event.message['longitude'] # 経度
+              
+
             when Line::Bot::Event::MessageType::Text
               case event.message['text']
                 when '使い方'
-                  s = "〇使い方を知りたい。\n'使い方'と入力する。"
                   a = "〇今日の天気を知りたい。\n'天気'または'てんき'と入力する。\n"
                   b = "〇現在地を登録したい。\n位置情報を送ることで表示される天気の地点を指定できます。\n"
                   c = "★位置情報の送り方\n"
@@ -83,5 +78,12 @@ class AnalbotController < ApplicationController
       end 
     }  
     head :ok
+  end
+
+  def cal_address(user_long, user_lat)
+    locations = Location.pluck('id','lat','long')
+    locations.each do |loc|
+      puts loc
+    end
   end
 end
