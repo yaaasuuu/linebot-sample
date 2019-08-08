@@ -30,9 +30,10 @@ class AnalbotController < ApplicationController
             when Line::Bot::Event::MessageType::Location
               user_lat = event.message['latitude'] # 緯度
               user_long = event.message['longitude'] # 経度
-              # id = cal_address(user_long, user_lat)
-              # ms = "#{id}"
-              ms = "#{user_lat}\n#{user_long}"
+              id = cal_address(user_long, user_lat)
+              pref = Location.find_by(id: id).name
+              area = Location.find_by(id: id).detail
+              ms = "#{pref} #{area}"
 
             when Line::Bot::Event::MessageType::Text
               case event.message['text']
