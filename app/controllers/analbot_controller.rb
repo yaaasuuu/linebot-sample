@@ -36,6 +36,8 @@ class AnalbotController < ApplicationController
               ms = "#{pref} #{area} で登録しました！"
               ms = "#{ms}\n\"てんき\"と入力すると今日の天気が見れます。"
               ms = "#{ms}また、雨の日には朝7時に通知されます。"
+              #TODO: DBにユーザと登録地を保存するための処理
+              #TODO: ユーザごとの登録地の天気の出力
 
             when Line::Bot::Event::MessageType::Text
               case event.message['text']
