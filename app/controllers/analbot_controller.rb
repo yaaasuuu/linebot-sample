@@ -85,12 +85,11 @@ class AnalbotController < ApplicationController
 
   def cal_address(user_long, user_lat)
     locations = Location.pluck('id', 'latitude', 'longitude')
+    min = 100
     locations.each do |loc|
       id = loc[0]
       lat = loc[1]
       long = loc[2]
-
-      min = 100
       d = distance(user_lat, user_long, lat, long).round(6)
       if d < min
         min = d
