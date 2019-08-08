@@ -92,8 +92,8 @@ class AnalbotController < ApplicationController
       id = loc[0]
       lat = loc[1]
       long = loc[2]
-      d = distance(user_lat, user_long, lat, long) / 1000
-      d.round(6)
+      d = distance(user_lat, user_long, lat, long)
+      d = (d/1000).round(6)
       if d < min
         min = d
         min_id = id
