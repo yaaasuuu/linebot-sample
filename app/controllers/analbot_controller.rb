@@ -84,7 +84,7 @@ class AnalbotController < ApplicationController
   end
 
   def cal_address(user_long, user_lat)
-    locations = Location.pluck('id', 'lat', 'long')
+    locations = Location.pluck('id', 'latitude', 'longitude')
     locations.each do |loc|
       id = loc[0]
       lat = loc[1]
