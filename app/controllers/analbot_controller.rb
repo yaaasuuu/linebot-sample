@@ -3,6 +3,8 @@ class AnalbotController < ApplicationController
   require 'net/http'
   require 'uri'
   require 'rexml/document'
+  require 'open-uri'
+  DISTANCE_API = "http://vldb.gsi.go.jp/sokuchi/surveycalc/surveycalc/bl2st_calc.pl?"
 
   protect_from_forgery :except => [:callback]
 
@@ -85,12 +87,12 @@ class AnalbotController < ApplicationController
 
   def cal_address(user_long, user_lat)
     locations = Location.pluck('id', 'latitude', 'longitude')
-    min = 100
+    min = 100000
     locations.each do |loc|
       id = loc[0]
       lat = loc[1]
       long = loc[2]
-      d = distance(user_lat, user_long, lat, long).round(6)
+      d = distance(user_lat, user_long, lat, long)
       if d < min
         min = d
         min_id = id
@@ -100,31 +102,16 @@ class AnalbotController < ApplicationController
   end
 
   def distance(lat1, lng1, lat2, lng2)
-    # ラジアン単位に変換
-    x1 = lat1.to_f * Math::PI / 180
-    y1 = lng1.to_f * Math::PI / 180
-    x2 = lat2.to_f * Math::PI / 180
-    y2 = lng2.to_f * Math::PI / 180
-    
-    # 地球の半径 (km)
-    radius = 6378.137
-    
-    # 差の絶対値
-    diff_y = (y1 - y2).abs
-    
-    calc1 = Math.cos(x2) * Math.sin(diff_y)
-    calc2 = Math.cos(x1) * Math.sin(x2) - Math.sin(x1) * Math.cos(x2) * Math.cos(diff_y)
-    
-    # 分子
-    numerator = Math.sqrt(calc1 ** 2 + calc2 ** 2)
-    
-    # 分母
-    denominator = Math.sin(x1) * Math.sin(x2) + Math.cos(x1) * Math.cos(x2) * Math.cos(diff_y)
-    
-    # 弧度
-    degree = Math.atan2(numerator, denominator)
-    
-    # 大円距離 (km)
-    return degree * radius
+    req_params = {
+      outputType: "json",    # 出力タイプ
+      ellipsoid:  "bessel",  # 楕円体
+      latitude1:  lat1,      # 出発点緯度
+      longitude1: lng1,      # 出発点経度
+      latitude2:  lat2,      # 到着点緯度
+      longitude2: lng2       # 到着点経度
+    }
+    req_param = req_params.map { |k, v| "#{k}=#{v}" }.join("&")
+    result = JSON.parse(open(DISTANCE_API + req_param).read)
+    result["OutputData"]["geoLength"]
   end
 end
