@@ -33,7 +33,9 @@ class AnalbotController < ApplicationController
               id = cal_address(user_long, user_lat)
               pref = Location.find_by(id: id).name
               area = Location.find_by(id: id).detail
-              ms = "#{pref} #{area}"
+              ms = "#{pref} #{area} で登録しました！"
+              ms = "#{ms}\n\"てんき\"と入力すると今日の天気が見れます。"
+              ms = "#{ms}また、雨の日には朝7時に通知されます。"
 
             when Line::Bot::Event::MessageType::Text
               case event.message['text']
