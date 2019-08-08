@@ -97,7 +97,7 @@ class AnalbotController < ApplicationController
         min_id = id
       end
     end
-    return id
+    return min
   end
 
   def distance(lat1, lng1, lat2, lng2)
