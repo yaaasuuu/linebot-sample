@@ -25,15 +25,16 @@ class AnalbotController < ApplicationController
     events.each { |event|
       case event
         when Line::Bot::Event::Message
-          case event.Type
+          case event.type
 
-            when Line::Bot::Event::Type::Location
+            when Line::Bot::Event::MessageType::Location
               user_lat = event.message['latitude'] # 緯度
               user_long = event.message['longitude'] # 経度
-              id = cal_address(user_long, user_lat)
-              ms = "#{id}"
+              # id = cal_address(user_long, user_lat)
+              # ms = "#{id}"
+              ms = "#{user_lat}\n#{user_long}"
 
-            when Line::Bot::Event::Type::Text
+            when Line::Bot::Event::MessageType::Text
               case event.message['text']
                 when '使い方'
                   a = "〇今日の天気を知りたい。\n'天気'または'てんき'と入力する。\n"
