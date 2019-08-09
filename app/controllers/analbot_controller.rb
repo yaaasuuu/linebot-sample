@@ -38,16 +38,15 @@ class AnalbotController < ApplicationController
               ms = "#{ms}また、雨の日には朝7時に通知されます。"
               #TODO: DBにユーザと登録地を保存するための処理
               #TODO: ユーザごとの登録地の天気の出力
-              uid = event.source['userId']
+              uid = event['source']['userId']
               if user = User.find_by(user_id: uid)
                 user.location_id = id
-                user.save
               else
                 user = User.new
                 user.user_id = uid
                 user.location_id = id
-                user.save
               end
+              user.save
 
             when Line::Bot::Event::MessageType::Text
               case event.message['text']
