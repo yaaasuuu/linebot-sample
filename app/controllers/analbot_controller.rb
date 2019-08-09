@@ -39,7 +39,8 @@ class AnalbotController < ApplicationController
               #TODO: DBにユーザと登録地を保存するための処理
               #TODO: ユーザごとの登録地の天気の出力
               uid = event['source']['userId']
-              if user = User.find_by(user_id: uid)
+              user = User.find_by(user_id: uid)
+              if user
                 user.location_id = id
               else
                 user = User.new
