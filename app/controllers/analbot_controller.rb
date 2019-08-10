@@ -36,9 +36,8 @@ class AnalbotController < ApplicationController
               ms = "#{pref} #{area} で登録しました！"
               ms = "#{ms}\n\"てんき\"と入力すると今日の天気が見れます。"
               ms = "#{ms}また、雨の日には朝7時に通知されます。"
-              #TODO: DBにユーザと登録地を保存するための処理
-              #TODO: ユーザごとの登録地の天気の出力
               uid = event['source']['userId']
+  
               user = User.find_by(user_id: uid)
               if user
                 user.location_id = id
@@ -59,6 +58,7 @@ class AnalbotController < ApplicationController
                   e = "2.画面中央の'この位置を送信'を押す。"
                   ms = "#{a}#{b}#{c}#{d}#{e}"
                 
+                #TODO: ユーザごとの登録地の天気の出力
                 when '天気', 'てんき'
                   uri = URI.parse('https://www.drk7.jp/weather/xml/40.xml')
                   xml = Net::HTTP.get(uri)
