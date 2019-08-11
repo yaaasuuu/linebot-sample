@@ -59,15 +59,13 @@ class AnalbotController < ApplicationController
                   ms = "#{a}#{b}#{c}#{d}#{e}"
                 
                 when '天気', 'てんき'
-                  =begin
-                  user_tmp = User.find_by(user_id: event['source']['userId'])
-                  user_location_id = user_tmp.location_id
-                  user_location = Location.find_by(location_id: "#{user_location_id}")
-                  pref_name = user_location.name
-                  =end
+                  #user_tmp = User.find_by(user_id: event['source']['userId'])
+                  #user_location_id = user_tmp.location_id
+                  #user_location = Location.find_by(location_id: "#{user_location_id}")
                   pref_id = 40 # user_location.prefid
+                  #pref_name = user_location.name
                   area_name = "福岡地方" # user_location.detail
-
+                  
                   if pref_id > 0 && pref_id < 10
                     pref_id = "0#{pref_id}"
                   end
