@@ -60,13 +60,14 @@ class AnalbotController < ApplicationController
                 
                 when '天気', 'てんき'
                   user_tmp = User.find_by(user_id: event['source']['userId'])
-                  user_location = Location.find_by(location_id: user_tmp.location_id)
+                  user_location_id = user_tmp.location_id
+                  user_location = Location.find_by(location_id: "#{user_location_id}")
                   pref_id = user_location.prefid
                   pref_name = user_location.name
                   area_name = user_location.detail
 
                   if pref_id > 0 && pref_id < 10
-                    pref_id = "0#{pref_id}d"
+                    pref_id = "0#{pref_id}"
                   end
                   uri = URI.parse("https://www.drk7.jp/weather/xml/#{pref_id}.xml")
                   xml = Net::HTTP.get(uri)
