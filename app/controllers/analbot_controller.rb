@@ -59,12 +59,14 @@ class AnalbotController < ApplicationController
                   ms = "#{a}#{b}#{c}#{d}#{e}"
                 
                 when '天気', 'てんき'
+                  =begin
                   user_tmp = User.find_by(user_id: event['source']['userId'])
                   user_location_id = user_tmp.location_id
                   user_location = Location.find_by(location_id: "#{user_location_id}")
-                  pref_id = user_location.prefid
                   pref_name = user_location.name
-                  area_name = user_location.detail
+                  =end
+                  pref_id = 40 # user_location.prefid
+                  area_name = "福岡地方" # user_location.detail
 
                   if pref_id > 0 && pref_id < 10
                     pref_id = "0#{pref_id}"
@@ -89,9 +91,9 @@ class AnalbotController < ApplicationController
                   b = "06 ~ 12時 #{per06to12} %\n"
                   c = "12 ~ 18時 #{per12to18} %\n"
                   d = "18 ~ 24時 #{per18to24} %"
-                  main = "#{date}\n#{pref_name}#{area_name}の天気は\n「 #{weather} 」\n"
+                  main = "#{date}\n#{event['source']['userId']}の天気は\n「 #{weather} 」\n"
                   ms = "#{main}#{a}#{b}#{c}#{d}"
-
+#{pref_name}#{area_name}
                 else
                   ms = "使い方を知りたいときは'使い方'と入力してください。"
               end
