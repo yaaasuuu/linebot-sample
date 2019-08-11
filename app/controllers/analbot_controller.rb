@@ -58,17 +58,25 @@ class AnalbotController < ApplicationController
                   e = "2.画面中央の'この位置を送信'を押す。"
                   ms = "#{a}#{b}#{c}#{d}#{e}"
                 
-                #TODO: ユーザごとの登録地の天気の出力
                 when '天気', 'てんき'
-                  uri = URI.parse('https://www.drk7.jp/weather/xml/40.xml')
+                  user_tmp = User.find_by(user_id: event['source']['userId'])
+                  user_location = Location.find_by(location_id: user_tmp.location_id)
+                  pref_id = user_location.prefid
+                  pref_name = user_location.name
+                  area_name = user_location.detail
+
+                  if pref_id > 0 && pref_id < 10
+                    pref_id = "0#{pref_id}d"
+                  end
+                  uri = URI.parse("https://www.drk7.jp/weather/xml/#{pref_id}.xml")
                   xml = Net::HTTP.get(uri)
                   doc = REXML::Document.new(xml)
 
                   ENV['TZ'] = 'Asia/Tokyo'
                   d = Time.new;
-                  date = d.strftime("%Y/%m/%d") #日付
+                  date = d.strftime("%Y/%m/%d") # 日付
                   
-                  xpath = "weatherforecast/pref/area[2]/info[@date='#{date}']"
+                  xpath = "weatherforecast/pref/area[@id='#{area_name}']/info[@date='#{date}']"
                   
                   weather = doc.elements[xpath + '/weather'].text # 天気（例：「晴れ」）
                   per00to06 = doc.elements[xpath + '/rainfallchance/period[1]'].text # 0-6時の降水確率
@@ -80,7 +88,7 @@ class AnalbotController < ApplicationController
                   b = "06 ~ 12時 #{per06to12} %\n"
                   c = "12 ~ 18時 #{per12to18} %\n"
                   d = "18 ~ 24時 #{per18to24} %"
-                  main = "#{date} の天気は\n「 #{weather} 」\n"
+                  main = "#{date}\n#{pref_name}#{area_name}の天気は\n「 #{weather} 」\n"
                   ms = "#{main}#{a}#{b}#{c}#{d}"
 
                 else
