@@ -64,7 +64,7 @@ class AnalbotController < ApplicationController
                   user_location = Location.find_by(id: user_location_id)
                   pref_id = user_location.prefid
                   pref_name = user_location.name
-                  area_name = "福岡地方" # user_location.detail
+                  area_name = user_location.detail
                   
                   if pref_id > 0 && pref_id < 10
                     pref_id = "0#{pref_id}"
