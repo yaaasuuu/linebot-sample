@@ -51,5 +51,7 @@ task :alert_rain => :environment do
             response = client.push_message(user_id, message)
             p response
         end
+
+        puts "success!"
     end
 end
