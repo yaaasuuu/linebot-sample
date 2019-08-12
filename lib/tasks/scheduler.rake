@@ -8,6 +8,10 @@ require 'rexml/document'
 
 task :alert_rain => :environment do
     users = User.all
+    client = Line::Bot::Client.new { |config|
+        config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+        config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+    }
     users.each do |user|
         user_id = user.user_id
         user_location_id = user.location_id
@@ -47,10 +51,6 @@ task :alert_rain => :environment do
             message = {
                 type: 'text',
                 text: "#{ms}"
-            }
-            client = Line::Bot::Client.new { |config|
-                config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
-                config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
             }
             response = client.push_message(user_id, message)
             p response
