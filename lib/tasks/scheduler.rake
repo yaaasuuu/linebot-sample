@@ -4,6 +4,8 @@ task :test_scheduler => :environment do
   puts "it works."
 end
 
+require 'rexml/document'
+
 task :alert_rain => :environment do
     users = User.all
     users.each do |user|
