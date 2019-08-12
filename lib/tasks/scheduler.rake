@@ -35,7 +35,7 @@ task :alert_rain => :environment do
         
         weather = doc.elements[xpath + '/weather'].text # 天気（例：「晴れ」）
 
-        if weather.include?("晴")
+        if weather.include?("雨")
             per00to06 = doc.elements[xpath + '/rainfallchance/period[1]'].text # 0-6時の降水確率
             per06to12 = doc.elements[xpath + '/rainfallchance/period[2]'].text # 6-12時の降水確率
             per12to18 = doc.elements[xpath + '/rainfallchance/period[3]'].text # 12-18時の降水確率
