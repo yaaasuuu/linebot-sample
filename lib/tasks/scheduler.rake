@@ -57,3 +57,37 @@ task :alert_rain => :environment do
         end
     end
 end
+
+task :test_announcement => :environment do
+    users = User.all
+    client = Line::Bot::Client.new { |config|
+        config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+        config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+    }
+    users.each do |user|
+        user_id = user.user_id
+        message = {
+            type: 'text',
+            text: "プログラムテスト中"
+        }
+        response = client.push_message(user_id, message)
+        p response
+    end
+end
+
+task :end_announcement => :environment do
+    users = User.all
+    client = Line::Bot::Client.new { |config|
+        config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
+        config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
+    }
+    users.each do |user|
+        user_id = user.user_id
+        message = {
+            type: 'text',
+            text: "プログラムテスト終了"
+        }
+        response = client.push_message(user_id, message)
+        p response
+    end
+end
